@@ -127,13 +127,13 @@ std::string ConnectionHandler::prepareMessage(std::string userInput) {
         case 1: {
             preparedMessage += "01";
             preparedMessage += splitted[0];
-            preparedMessage += "\0";
+            preparedMessage += '\0';
             preparedMessage += splitted[1];
-            preparedMessage += "\0";
+            preparedMessage += '\0';
             break;
         }
         case 2: {
-            preparedMessage += "02" + splitted[0] + "\0" + splitted[1];
+            preparedMessage += "02" + splitted[0] + '\0' + splitted[1];
             break;
         }
         case 3: {
@@ -149,7 +149,7 @@ std::string ConnectionHandler::prepareMessage(std::string userInput) {
             break;
         }
         case 6: {
-            preparedMessage += "06" +splitted[0]+"\0"+ splitted[1] + "\0";
+            preparedMessage += "06" +splitted[0]+'\0'+ splitted[1] + '\0';
             break;
         }
         case 7: {
@@ -157,7 +157,7 @@ std::string ConnectionHandler::prepareMessage(std::string userInput) {
             break;
         }
         case 8: {
-            preparedMessage += "08" + splitted[0] + "\0";
+            preparedMessage += "08" + splitted[0] + '\0';
             break;
         }
         default:

@@ -92,7 +92,6 @@ int main (int argc, char *argv[]) {
                 case "11":
                     break;
             }*/
-           std::cout<<answer<<std::endl;
             if (answer == "bye") {
                 std::cout << "Exiting...\n" << std::endl;
                 break;
