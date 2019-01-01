@@ -28,6 +28,8 @@ int main (int argc, char *argv[]) {
         std::cerr << "Cannot connect to " << host << ":" << port << std::endl;
         return 1;
     }
+
+
     connected=true;
     readInputTask readInputTask1(_mutex,connectionHandler,tasksQueue);
     std::thread keyboardThread(&readInputTask::run, &readInputTask1);

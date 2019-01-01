@@ -19,6 +19,7 @@ void shortToBytes(short num, char* bytesArr)
 }
 
 std::vector<std::string> Util::split(std::string toSplit) {
+    std::vector<std::string> splitted;
     char *cstr = new char[toSplit.length() + 1];
     strcpy(cstr, toSplit.c_str());
 
@@ -26,8 +27,8 @@ std::vector<std::string> Util::split(std::string toSplit) {
     pch = strtok (cstr," ");
     while (pch != NULL)
     {
-        printf ("%s\n",pch);
-        pch = strtok (NULL, " ,.-");
+        splitted.push_back(pch);
+        pch = strtok (NULL, " ");
     }
-    return 0;
+    return splitted;
 }
