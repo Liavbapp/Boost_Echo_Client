@@ -124,34 +124,42 @@ std::string ConnectionHandler::prepareMessage(std::string userInput) {
 
     switch (hashedType)
     {
-        case 1:
-            preparedMessage+="01";
-            preparedMessage+=splitted[0];
-            preparedMessage+="\0";
-            preparedMessage+=splitted[1];
-            preparedMessage+="\0";
+        case 1: {
+            preparedMessage += "01";
+            preparedMessage += splitted[0];
+            preparedMessage += "\0";
+            preparedMessage += splitted[1];
+            preparedMessage += "\0";
             break;
-        case 2:
-            preparedMessage+="02"+splitted[0]+"\0"+splitted[1]+"\0";
+        }
+        case 2: {
+            preparedMessage += "02" + splitted[0] + "\0" + prepareUserNameList(splitted[1]);
             break;
-        case 3:
-            preparedMessage+="03";
+        }
+        case 3: {
+            preparedMessage += "03";
             break;
-        case 4:
-            std::string userNamelist="04"+prepareUserNameList(splitted[2]);
-            preparedMessage+=splitted[0]+splitted[1]+userNamelist;
+        }
+        case 4: {
+            std::string userNamelist = "04" + splitted[0] + "\0" + splitted[1] + "\0";
             break;
-        case 5:
-            preparedMessage+="05"+splitted[0]+"\0";
+        }
+        case 5: {
+            preparedMessage += "05" + splitted[0] + "\0";
             break;
-        case 6:
-            preparedMessage+="06"+splitted[0]+"\0"+splitted[1]+"\0";
+        }
+        case 6: {
+            preparedMessage += "06" + splitted[1] + "\0";
             break;
-        case 7:preparedMessage+="07";
+        }
+        case 7: {
+            preparedMessage += "07";
             break;
-        case 8:
-            preparedMessage+="08"+splitted[0]+"\0";
+        }
+        case 8: {
+            preparedMessage += "08" + splitted[0] + "\0";
             break;
+        }
         default:
             break;
 
