@@ -13,7 +13,9 @@ private:
 	const short port_;
 	boost::asio::io_service io_service_;   // Provides core I/O functionality
 	tcp::socket socket_;
- 
+
+    std::string prepareUserNameList(std::vector<std::string> userNameList);
+
 public:
     ConnectionHandler(std::string host, short port);
     virtual ~ConnectionHandler();
@@ -50,7 +52,6 @@ public:
 
     std::string prepareMessage(std::string userInput);
 
-    std::string prepareUserNameList(std::string userNameList);
 
 }; //class ConnectionHandler
  

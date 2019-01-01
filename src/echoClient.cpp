@@ -37,7 +37,7 @@ int main (int argc, char *argv[]) {
 
     //---------DEBUGGING------------//
 
-    std::string test="LOGIN chen 123";
+    std::string test="UNFOLLOW 3 YOSII RONEN DIMA";
     std::string prepared=connectionHandler.prepareMessage(test);
 
 	//From here we will see the rest of the ehco client implementation:

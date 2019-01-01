@@ -133,7 +133,7 @@ std::string ConnectionHandler::prepareMessage(std::string userInput) {
             break;
         }
         case 2: {
-            preparedMessage += "02" + splitted[0] + "\0" + prepareUserNameList(splitted[1]);
+            preparedMessage += "02" + splitted[0] + "\0" + splitted[1];
             break;
         }
         case 3: {
@@ -141,7 +141,8 @@ std::string ConnectionHandler::prepareMessage(std::string userInput) {
             break;
         }
         case 4: {
-            std::string userNamelist = "04" + splitted[0] + "\0" + splitted[1] + "\0";
+            std::string userNamelist = "04" + splitted[0] + "\0" + prepareUserNameList(splitted);
+            std::string check="";
             break;
         }
         case 5: {
@@ -149,7 +150,7 @@ std::string ConnectionHandler::prepareMessage(std::string userInput) {
             break;
         }
         case 6: {
-            preparedMessage += "06" + splitted[1] + "\0";
+            preparedMessage += "06" +splitted[0]+"\0"+ splitted[1] + "\0";
             break;
         }
         case 7: {
@@ -167,12 +168,11 @@ std::string ConnectionHandler::prepareMessage(std::string userInput) {
 }
 
 
-std::string ConnectionHandler:: prepareUserNameList(string userNameList){
-    Util util;
+std::string ConnectionHandler:: prepareUserNameList(std::vector<std::string> userNameList){
+
     std::string list="";
-    std::vector<string> names=util.split(userNameList);
-    for(int i=0;i<names.size();i=i+1){
-        list+=names.at(i)+'\0';
+    for(int i=1;i<userNameList.size();i=i+1){
+        list+=userNameList.at(i)+"\0";
     }
     return list;
 }
