@@ -101,3 +101,40 @@ void ConnectionHandler::close() {
         std::cout << "closing failed: connection already closed" << std::endl;
     }
 }
+
+std::string ConnectionHandler::prepareMessage(std::string userInput) {
+
+    std::string currentMessage=userInput;
+    std::string preparedMessage;
+
+
+    //std::string type=userInput.substr(0,userInput.find(" "));
+    //currentMessage=currentMessage.substr(type.length()+1,currentMessage.length()-type.length());
+
+   /* switch (userInput)
+    {
+        case "REGISTER":
+            preparedMessage+="01";
+            std::string username=
+            preparedMessage+=
+            break;
+        case "LOGIN":
+            break;
+        case "LOGOUT":
+            break;
+        case "FOLLOW":
+            break;
+        case "POST":
+            break;
+        case "PM":
+            break;
+        case "USERLIST":
+            break;
+        case "STAT":
+            break;
+        default:
+            break;
+
+    }*/
+}
+

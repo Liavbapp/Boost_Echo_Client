@@ -15,6 +15,7 @@ void readInputTask::run() {
         std::cin.getline(buf, bufsize);
         std::string line(buf);
         int len=line.length();
+        connectionHandler.prepareMessage(line);
 
         std::lock_guard<std::mutex> lock(_mutex); // constructor locks the mutex while
         tasksQueue.push(line);
