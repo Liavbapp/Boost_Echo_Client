@@ -49,7 +49,9 @@ public:
     void close();
 
     std::string prepareMessage(std::string userInput);
- 
+
+    std::string prepareUserNameList(std::string userNameList);
+
 }; //class ConnectionHandler
  
 #endif

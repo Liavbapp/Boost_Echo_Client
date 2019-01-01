@@ -14,6 +14,7 @@ public:
     short bytesToShort(char* bytesArr);
     void shortToBytes(short num, char* bytesArr);
     std::vector<std::string> split(std::string);
+    int hashit(std::string);
 
 };
 

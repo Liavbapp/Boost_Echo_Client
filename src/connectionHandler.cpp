@@ -1,5 +1,6 @@
 #include <connectionHandler.h>
- 
+#include <include/Util.h>
+
 using boost::asio::ip::tcp;
 
 using std::cin;
@@ -7,7 +8,8 @@ using std::cout;
 using std::cerr;
 using std::endl;
 using std::string;
- 
+
+
 ConnectionHandler::ConnectionHandler(string host, short port): host_(host), port_(port), io_service_(), socket_(io_service_){}
     
 ConnectionHandler::~ConnectionHandler() {
@@ -104,37 +106,67 @@ void ConnectionHandler::close() {
 
 std::string ConnectionHandler::prepareMessage(std::string userInput) {
 
+    Util util;
     std::string currentMessage=userInput;
+    std::vector<std::string> splitted;
+    std::string type;
     std::string preparedMessage;
+    if(currentMessage.find(" ")!=string::npos) {
+        type = currentMessage.substr(0, currentMessage.find(" "));
+        currentMessage = currentMessage.substr(type.length() + 1, currentMessage.length() - type.length());
 
+        splitted = util.split(currentMessage);
+    }
+    else
+        type=currentMessage;
 
-    //std::string type=userInput.substr(0,userInput.find(" "));
-    //currentMessage=currentMessage.substr(type.length()+1,currentMessage.length()-type.length());
+    int hashedType=util.hashit(type);
 
-   /* switch (userInput)
+    switch (hashedType)
     {
-        case "REGISTER":
+        case 1:
             preparedMessage+="01";
-            std::string username=
-            preparedMessage+=
+            preparedMessage+=splitted[0];
+            preparedMessage+="\0";
+            preparedMessage+=splitted[1];
+            preparedMessage+="\0";
             break;
-        case "LOGIN":
+        case 2:
+            preparedMessage+="02"+splitted[0]+"\0"+splitted[1]+"\0";
             break;
-        case "LOGOUT":
+        case 3:
+            preparedMessage+="03";
             break;
-        case "FOLLOW":
+        case 4:
+            std::string userNamelist="04"+prepareUserNameList(splitted[2]);
+            preparedMessage+=splitted[0]+splitted[1]+userNamelist;
             break;
-        case "POST":
+        case 5:
+            preparedMessage+="05"+splitted[0]+"\0";
             break;
-        case "PM":
+        case 6:
+            preparedMessage+="06"+splitted[0]+"\0"+splitted[1]+"\0";
             break;
-        case "USERLIST":
+        case 7:preparedMessage+="07";
             break;
-        case "STAT":
+        case 8:
+            preparedMessage+="08"+splitted[0]+"\0";
             break;
         default:
             break;
 
-    }*/
+    }
 }
+
+
+std::string ConnectionHandler:: prepareUserNameList(string userNameList){
+    Util util;
+    std::string list="";
+    std::vector<string> names=util.split(userNameList);
+    for(int i=0;i<names.size();i=i+1){
+        list+=names.at(i)+'\0';
+    }
+    return list;
+}
+
 

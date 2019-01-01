@@ -35,6 +35,11 @@ int main (int argc, char *argv[]) {
     std::thread keyboardThread(&readInputTask::run, &readInputTask1);
     int len=-1;
 
+    //---------DEBUGGING------------//
+
+    std::string test="LOGOUT";
+    std::string prepared=connectionHandler.prepareMessage(test);
+
 	//From here we will see the rest of the ehco client implementation:
     while (connected) {
 
