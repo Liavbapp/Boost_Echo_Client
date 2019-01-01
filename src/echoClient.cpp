@@ -37,8 +37,10 @@ int main (int argc, char *argv[]) {
 
     //---------DEBUGGING------------//
 
-    std::string test="UNFOLLOW 3 YOSII RONEN DIMA";
-    std::string prepared=connectionHandler.prepareMessage(test);
+    //std::string test="FOLLOW 0 3 YOSII RONEN DIMA";
+    //std::string prepared=connectionHandler.prepareMessage(test);
+
+    //^^^^^^^^^DEBUGGING^^^^^^^^^^^^//
 
 	//From here we will see the rest of the ehco client implementation:
     while (connected) {
@@ -48,7 +50,6 @@ int main (int argc, char *argv[]) {
             std::string line=tasksQueue.front();
             tasksQueue.pop();
             //std::lock_guard<std::mutex> unlock(_mutex);
-            std::cout<<"alive";
 
             if (!connectionHandler.sendLine(line)) {
                 std::cout << "Disconnected. Exiting...\n" << std::endl;
@@ -79,7 +80,7 @@ int main (int argc, char *argv[]) {
 
             std::cout<<answer<<std::endl;
 
-           /* switch(opcode)
+            /*switch(opcode)
             {
                 case "09":
 
@@ -91,7 +92,7 @@ int main (int argc, char *argv[]) {
                 case "11":
                     break;
             }*/
-
+           std::cout<<answer<<std::endl;
             if (answer == "bye") {
                 std::cout << "Exiting...\n" << std::endl;
                 break;

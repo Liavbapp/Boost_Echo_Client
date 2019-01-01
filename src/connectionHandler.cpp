@@ -141,8 +141,7 @@ std::string ConnectionHandler::prepareMessage(std::string userInput) {
             break;
         }
         case 4: {
-            std::string userNamelist = "04" + splitted[0] + "\0" + prepareUserNameList(splitted);
-            std::string check="";
+            std::string preparedMessage = "04" + splitted[0] + splitted[1] + prepareUserNameList(splitted);
             break;
         }
         case 5: {
@@ -165,13 +164,14 @@ std::string ConnectionHandler::prepareMessage(std::string userInput) {
             break;
 
     }
+    return preparedMessage;
 }
 
 
 std::string ConnectionHandler:: prepareUserNameList(std::vector<std::string> userNameList){
 
     std::string list="";
-    for(int i=1;i<userNameList.size();i=i+1){
+    for(int i=2;i<userNameList.size();i=i+1){
         list+=userNameList.at(i)+"\0";
     }
     return list;
