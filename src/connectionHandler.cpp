@@ -144,6 +144,7 @@ std::string ConnectionHandler::prepareMessage(std::string userInput) {
             std::string preparedMessage = "04" + splitted[0] + splitted[1] + prepareUserNameList(splitted);
             break;
         }
+
         case 5: {
             preparedMessage += "05" + splitted[0] + "\0";
             break;
