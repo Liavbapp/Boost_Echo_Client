@@ -75,32 +75,88 @@ int main (int argc, char *argv[]) {
             switch(opcodeShort)
             {
                 case 9: //notification
+                {
                     char type[1];
-                    type[1]=connectionHandler.getBytes(type,1);
-                    std::string postingUser="";
-                    postingUser=connectionHandler.getFrameAscii(postingUser,'\0');
-                    std::string content="";
-                    content=connectionHandler.getFrameAscii(content,'\0');
+                    type[1] = connectionHandler.getBytes(type, 1);
+                    std::string postingUser = "";
+                    postingUser = connectionHandler.getFrameAscii(postingUser, '\0');
+                    std::string content = "";
+                    content = connectionHandler.getFrameAscii(content, '\0');
+                    std::string type_s;
+                    if(type==0) type_s="PM";
+                    else type_s="PUBLIC";
+                    std::cout<<"NOTIFICATION "<<type_s <<" "<<postingUser<<" "<<content<<std::endl;
                     break;
+                }
                 case 10: //ack
+                {
                     char msgOpcode[2];
-                    connectionHandler.getBytes(msgOpcode,2);
-                    short msgOpcodeShort=util.bytesToShort(msgOpcode);
-                    std::string oprional="";
+                    connectionHandler.getBytes(msgOpcode, 2);
+                    short msgOpcodeShort = util.bytesToShort(msgOpcode);
+                    std::string optional = "";
 
-                    switch (msgOpcode)
-                    {
-                        case 4:
+                    switch (msgOpcodeShort) { //resolving the ack's that has optional
+                        case 3: //logout-will terminate
+                        {
+                            connected=false;
+                        }
+                        case 4: {
+                            char numOfUsers[2];
+                            connectionHandler.getBytes(numOfUsers, 2);
+                            short numOfUsersShort = util.bytesToShort(numOfUsers);
+                            std::string usernameList = "";
+                            for (int i = 0; i < numOfUsersShort; i = i + 1) {
+                                std::string name = "";
+                                name = connectionHandler.getFrameAscii(name, '\0');
+                                usernameList += name + " ";
+                            }
+                            optional += std::to_string(msgOpcodeShort) + " " + std::to_string(numOfUsersShort) + " " +
+                                        usernameList;
                             break;
-                        case 7:
+                        }
+                        case 7: {
+                            char numOfUsers[2];
+                            connectionHandler.getBytes(numOfUsers, 2);
+                            short numOfUsers_s = util.bytesToShort(numOfUsers);
+                            std::string userNameList;
+                            userNameList = connectionHandler.getUserNameList(userNameList, numOfUsers_s);
+                            optional+=numOfUsers_s+" ";
+                            optional+=userNameList;
                             break;
-                        case 8:
+                        }
+                        case 8: {
+                            char numPosts[2];
+                            connectionHandler.getBytes(numPosts, 2);
+                            short numPosts_s = util.bytesToShort(numPosts);
+
+                            char numFollowers[2];
+                            connectionHandler.getBytes(numFollowers, 2);
+                            short numFollowers_s = util.bytesToShort(numFollowers);
+
+                            char numFollowing[2];
+                            connectionHandler.getBytes(numFollowing, 2);
+                            short numFollowing_s = util.bytesToShort(numFollowing);
+
+                            optional+=numPosts_s+" ";
+                            optional+=numFollowers_s+" ";
+                            optional+=numFollowing_s;
+
                             break;
+                        }
                     }
+                    std::cout<<"ACK "<<msgOpcode <<" "<<optional<<std::endl;
+                    break;
+                }
+                case 11: //error
+                {
+                    char msgOpcode[2];
+                    connectionHandler.getBytes(msgOpcode, 2);
+                    short msgOpcodeShort = util.bytesToShort(msgOpcode);
+
+                    std::cout<<"ERROR "<<msgOpcode <<std::endl;
 
                     break;
-                case 11: //error
-                    break;
+                }
             }
 
             if (answer == "bye") {

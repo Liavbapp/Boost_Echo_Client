@@ -88,6 +88,16 @@ bool ConnectionHandler::getFrameAscii(std::string& frame, char delimiter) {
     }
     return true;
 }
+
+std::string ConnectionHandler::getUserNameList(std::string userList,short numOfUsers) {
+    std::string currentUserInList="";
+    std::string toReturn="";
+    for(int i=0;i<numOfUsers;i++) {
+        getFrameAscii(currentUserInList,'\0');
+        toReturn+=currentUserInList;
+    }
+    return toReturn;
+}
  
 bool ConnectionHandler::sendFrameAscii(const std::string& frame, char delimiter) {
 	bool result=sendBytes(frame.c_str(),frame.length());

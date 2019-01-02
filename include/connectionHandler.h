@@ -52,6 +52,8 @@ public:
 
     std::string prepareMessage(std::string userInput);
 
+    std::string getUserNameList(std::string userList,short numOfUsers);
+
 
 }; //class ConnectionHandler
  
