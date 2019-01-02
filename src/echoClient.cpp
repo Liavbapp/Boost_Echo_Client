@@ -144,7 +144,7 @@ int main (int argc, char *argv[]) {
                             break;
                         }
                     }
-                    std::cout<<"ACK "<<msgOpcode <<" "<<optional<<std::endl;
+                    std::cout<<"ACK "<<msgOpcodeShort <<" "<<optional<<std::endl;
                     break;
                 }
                 case 11: //error
