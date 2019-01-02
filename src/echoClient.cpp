@@ -3,6 +3,7 @@
 #include <mutex>
 #include <queue>
 #include <thread>
+#include <zconf.h>
 #include "readInputTask.h"
 #include "Util.h"
 
@@ -61,42 +62,67 @@ int main (int argc, char *argv[]) {
             // 2. Read a line (up to the newline character using the getline() buffered reader
             // 3. Read up to the null character
             std::string answer;
+
             // Get back an answer: by using the expected number of bytes (len bytes + newline delimiter)
             // We could also use: connectionHandler.getline(answer) and then get the answer without the newline char at the end
-            if (!connectionHandler.getLine(answer)) {
-                std::cout << "Disconnected. Exiting...\n" << std::endl;
-                break;
-            }
 
-           len=answer.length();
-            // A C string must end with a 0 char delimiter.  When we filled the answer buffer from the socket
-            // we filled up to the \n char - we must make sure now that a 0 char is also present. So we truncate last character.
-            answer.resize(len-1);
-            std::cout << "Reply: " << answer << " " << len << " bytes " << std::endl << std::endl;
-
-            std::string opcode=answer.substr(0,2);
-            int x=5;
-
-            //short intOpcode=util.bytesToShort(opcode);
+            char opcode[2];
+            connectionHandler.getBytes(opcode,2);
+            short opcodeShort=util.bytesToShort(opcode);
 
             //processing
 
-            /*switch(intOpcode)
+            switch(opcodeShort)
             {
-                case 9:
-                    char* splitted=answer.c_str();
-                    splitted=std::strtok(answer.c_str(),"\0");
+                case 9: //notification
+                    char type[1];
+                    type[1]=connectionHandler.getBytes(type,1);
+                    std::string postingUser="";
+                    postingUser=connectionHandler.getFrameAscii(postingUser,'\0');
+                    std::string content="";
+                    content=connectionHandler.getFrameAscii(content,'\0');
                     break;
-                case 10:
+                case 10: //ack
+                    char msgOpcode[2];
+                    connectionHandler.getBytes(msgOpcode,2);
+                    short msgOpcodeShort=util.bytesToShort(msgOpcode);
+                    std::string oprional="";
+
+                    switch (msgOpcode)
+                    {
+                        case 4:
+                            break;
+                        case 7:
+                            break;
+                        case 8:
+                            break;
+                    }
+
                     break;
-                case 11:
+                case 11: //error
                     break;
             }
+
             if (answer == "bye") {
                 std::cout << "Exiting...\n" << std::endl;
                 break;
 
-            }*/
+            }
+
+
+            /*  if (!connectionHandler.getBytes(answer,4)) {
+                  std::cout << "Disconnected. Exiting...\n" << std::endl;
+                  break;
+              }
+
+             len=answer.length();
+              // A C string must end with a 0 char delimiter.  When we filled the answer buffer from the socket
+              // we filled up to the \n char - we must make sure now that a 0 char is also present. So we truncate last character.
+              answer.resize(len-1);
+              std::cout << "Reply: " << answer << " " << len << " bytes " << std::endl << std::endl;
+            */
+
+
 
         }
     }

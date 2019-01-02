@@ -11,7 +11,7 @@
 
 class Util {
 public:
-    short bytesToShort(char *bytesArr);
+    short bytesToShort(const char *bytesArr);
 
     void shortToBytes(short num, char *bytesArr);
 

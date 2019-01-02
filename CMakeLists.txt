@@ -18,7 +18,7 @@ if(Boost_FOUND)
             include/readInputTask.h
             src/Util.cpp
             include/Util.h
-            makefile)
+            makefile src/EncoderDecoder.cpp src/EncoderDecoder.h)
     target_link_libraries(Boost_Echo_Client ${Boost_LIBRARIES})
 endif()
 set(CMAKE_CXX_STANDARD 11)
