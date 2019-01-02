@@ -75,28 +75,28 @@ int main (int argc, char *argv[]) {
             std::cout << "Reply: " << answer << " " << len << " bytes " << std::endl << std::endl;
 
             std::string opcode=answer.substr(0,2);
+            int x=5;
+
+            //short intOpcode=util.bytesToShort(opcode);
 
             //processing
 
-            std::cout<<answer<<std::endl;
-
-            /*switch(opcode)
+            /*switch(intOpcode)
             {
-                case "09":
-
+                case 9:
                     char* splitted=answer.c_str();
                     splitted=std::strtok(answer.c_str(),"\0");
                     break;
-                case "10":
+                case 10:
                     break;
-                case "11":
+                case 11:
                     break;
-            }*/
+            }
             if (answer == "bye") {
                 std::cout << "Exiting...\n" << std::endl;
                 break;
 
-            }
+            }*/
 
         }
     }
