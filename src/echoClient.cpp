@@ -151,9 +151,9 @@ int main (int argc, char *argv[]) {
                 {
                     char msgOpcode[2];
                     connectionHandler.getBytes(msgOpcode, 2);
-                    short msgOpcodeShort = util.bytesToShort(msgOpcode);
+                    short msgOpcode_s = util.bytesToShort(msgOpcode);
 
-                    std::cout<<"ERROR "<<msgOpcode <<std::endl;
+                    std::cout<<"ERROR "<<msgOpcode_s<< " " <<std::endl;
 
                     break;
                 }

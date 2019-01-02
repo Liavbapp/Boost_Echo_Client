@@ -20,7 +20,7 @@ void shortToBytes(short num, char* bytesArr)
     bytesArr[1] = (num & 0xFF);
 }
 
-std::vector<std::string> Util::split(std::string toSplit) {
+std::vector<std::string> Util::split(std::string toSplit) { //split by a space delimiter
     std::vector<std::string> splitted;
     char *cstr = new char[toSplit.length() + 1];
     strcpy(cstr, toSplit.c_str());

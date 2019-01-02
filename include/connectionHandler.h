@@ -54,6 +54,8 @@ public:
 
     std::string getUserNameList(std::string userList,short numOfUsers);
 
+    std::string concatenateNames(std::vector<std::string> strings);
+
 
 }; //class ConnectionHandler
  

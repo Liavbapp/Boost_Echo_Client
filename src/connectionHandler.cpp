@@ -72,7 +72,8 @@ bool ConnectionHandler::getLine(std::string& line) {
 bool ConnectionHandler::sendLine(std::string& line) {
     return sendFrameAscii(line, '\n');
 }
- 
+
+
 bool ConnectionHandler::getFrameAscii(std::string& frame, char delimiter) {
     char ch;
     // Stop when we encounter the null character. 
@@ -121,6 +122,7 @@ std::string ConnectionHandler::prepareMessage(std::string userInput) {
     std::vector<std::string> splitted;
     std::string type;
     std::string preparedMessage;
+    char* bytesArr=new char[2];
     if(currentMessage.find(" ")!=string::npos) {
         type = currentMessage.substr(0, currentMessage.find(" "));
         currentMessage = currentMessage.substr(type.length() + 1, currentMessage.length() - type.length());
@@ -134,41 +136,73 @@ std::string ConnectionHandler::prepareMessage(std::string userInput) {
 
     switch (hashedType)
     {
-        case 1: {
-            preparedMessage += "01";
+        case 1: { //register
+            util.shortToBytes(1,bytesArr);
+            preparedMessage += bytesArr[0];
+            preparedMessage += bytesArr[1];
             preparedMessage += splitted[0];
             preparedMessage += '\0';
             preparedMessage += splitted[1];
             preparedMessage += '\0';
             break;
         }
-        case 2: {
-            preparedMessage += "02" + splitted[0] + '\0' + splitted[1];
+        case 2: { //login
+            util.shortToBytes(2,bytesArr);
+            preparedMessage += bytesArr[0];
+            preparedMessage += bytesArr[1];
+            preparedMessage+=splitted[0] + '\0';
+            preparedMessage+=splitted[1]+'\0';
             break;
         }
-        case 3: {
-            preparedMessage += "03";
+        case 3: { //logout
+            util.shortToBytes(3,bytesArr);
+            preparedMessage += bytesArr[0];
+            preparedMessage += bytesArr[1];
             break;
         }
-        case 4: {
-            std::string preparedMessage = "04" + splitted[0] + splitted[1] + prepareUserNameList(splitted);
+        case 4: { //follow
+            util.shortToBytes(4,bytesArr);
+            preparedMessage += bytesArr[0];
+            preparedMessage += bytesArr[1];
+            if(splitted[0]=="0")
+            preparedMessage+='\0';
+            else
+                preparedMessage+='\1';
+            char* bytesArr=new char[2];
+            bytesArr[0] = ((stoi(splitted[1]) >> 8) & 0xFF);
+            bytesArr[1] = ((stoi(splitted[1]) & 0xFF));
+            preparedMessage+=bytesArr[0];
+            preparedMessage+=bytesArr[1];
+            preparedMessage+=prepareUserNameList(splitted)+'\0';
             break;
         }
 
-        case 5: {
-            preparedMessage += "05" + splitted[0] + "\0";
+        case 5: { //post
+            util.shortToBytes(5,bytesArr);
+            preparedMessage += bytesArr[0];
+            preparedMessage += bytesArr[1];
+            preparedMessage+=concatenateNames(splitted) + '\0';
             break;
         }
-        case 6: {
-            preparedMessage += "06" +splitted[0]+'\0'+ splitted[1] + '\0';
+        case 6: { //pm
+            util.shortToBytes(6,bytesArr);
+            preparedMessage += bytesArr[0];
+            preparedMessage += bytesArr[1];
+            preparedMessage+=splitted[0]+'\0';
+            preparedMessage+=splitted[1] + '\0';
             break;
         }
-        case 7: {
-            preparedMessage += "07";
+        case 7: { //userlist
+            util.shortToBytes(7,bytesArr);
+            preparedMessage += bytesArr[0];
+            preparedMessage += bytesArr[1];
             break;
         }
-        case 8: {
-            preparedMessage += "08" + splitted[0] + '\0';
+        case 8: { //stat
+            util.shortToBytes(8,bytesArr);
+            preparedMessage += bytesArr[0];
+            preparedMessage += bytesArr[1];
+            preparedMessage+=splitted[0] + '\0';
             break;
         }
         default:
@@ -183,9 +217,15 @@ std::string ConnectionHandler:: prepareUserNameList(std::vector<std::string> use
 
     std::string list="";
     for(int i=2;i<userNameList.size();i=i+1){
-        list+=userNameList.at(i)+"\0";
+        list+=userNameList.at(i)+'\0';
     }
     return list;
 }
 
+std::string ConnectionHandler::concatenateNames(std::vector<std::string> strings) {
+    std::string toReturn="";
+    for(int i=0;i<strings.size();i++)
+        toReturn+=strings[i]+" ";
+    return toReturn.substr(0,toReturn.size()-1);
+}
 
