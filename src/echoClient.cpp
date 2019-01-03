@@ -46,21 +46,7 @@ int main (int argc, char *argv[]) {
 	//From here we will see the rest of the ehco client implementation:
     while (connected) {
 
-        if(!tasksQueue.empty()) {
-            //std::lock_guard<std::mutex> lock(_mutex); // constructor locks the mutex while
-            std::string line=tasksQueue.front();
-            tasksQueue.pop();
-            //std::lock_guard<std::mutex> unlock(_mutex);
 
-            if (!connectionHandler.sendLine(line)) {
-                std::cout << "Disconnected. Exiting...\n" << std::endl;
-                break;
-            }
-
-            // We can use one of three options to read data from the server:
-            // 1. Read a fixed number of characters
-            // 2. Read a line (up to the newline character using the getline() buffered reader
-            // 3. Read up to the null character
             std::string answer;
 
             // Get back an answer: by using the expected number of bytes (len bytes + newline delimiter)
@@ -112,9 +98,8 @@ int main (int argc, char *argv[]) {
                             for (int i = 0; i < numOfUsersInt; i = i + 1) {
                                 std::string name = "";
                                 connectionHandler.getFrameAscii(name, '\0');
-                                //??
-                                char trash [1];
-                                connectionHandler.getBytes(trash,1);
+
+
 
                                 name=name.substr(0,name.length()-1);
                                 usernameList += name + " ";
@@ -194,7 +179,7 @@ int main (int argc, char *argv[]) {
 
 
         }
-    }
+    //}
     return 0;
 }
 

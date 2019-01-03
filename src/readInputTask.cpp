@@ -4,7 +4,7 @@
 
 #include "readInputTask.h"
 
-readInputTask::readInputTask(std::mutex &_mutex,ConnectionHandler& connHandler,std::queue<std::string>& taskQueue):connectionHandler(connectionHandler), _mutex(_mutex),connected(true),tasksQueue(taskQueue) {}
+readInputTask::readInputTask(std::mutex &_mutex,ConnectionHandler& connHandler,std::queue<std::string>& taskQueue):connectionHandler(connHandler), _mutex(_mutex),connected(true),tasksQueue(taskQueue) {}
 
 void readInputTask::run() {
 
@@ -14,12 +14,16 @@ void readInputTask::run() {
         char buf[bufsize];
         std::cin.getline(buf, bufsize);
         std::string line(buf);
-        line=connectionHandler.prepareMessage(line);
+        line=connectionHandler.prepareMessage(line)+'\n';
         int len=line.length();
 
+        if (!connectionHandler.sendLine(line)) {
+            std::cout << "Disconnected. Exiting...\n" << std::endl;
+            break;
+        }
 
         //std::lock_guard<std::mutex> lock(_mutex); // constructor locks the mutex while
-        tasksQueue.push(line);
+        //tasksQueue.push(line);
         //std::lock_guard<std::mutex> unlock(_mutex);
 
         // connectionHandler.sendLine(line) appends '\n' to the message. Therefor we send len+1 bytes.
