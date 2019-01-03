@@ -36,12 +36,6 @@ int main (int argc, char *argv[]) {
     std::thread keyboardThread(&readInputTask::run, &readInputTask1);
     int len=-1;
 
-    //---------DEBUGGING------------//
-
-    //std::string test="FOLLOW 0 3 YOSII RONEN DIMA";
-    //std::string prepared=connectionHandler.prepareMessage(test);
-
-    //^^^^^^^^^DEBUGGING^^^^^^^^^^^^//
 
 	//From here we will see the rest of the ehco client implementation:
     while (connected) {
@@ -64,14 +58,19 @@ int main (int argc, char *argv[]) {
                 {
                     char type[1];
                     type[1] = connectionHandler.getBytes(type, 1);
+                    int typeInt=type[0]-48;
                     std::string postingUser = "";
-                    postingUser = connectionHandler.getFrameAscii(postingUser, '\0');
+
+
+                    connectionHandler.getFrameAscii(postingUser, '\0');
+                    postingUser=postingUser.substr(0,postingUser.length()-1);
                     std::string content = "";
-                    content = connectionHandler.getFrameAscii(content, '\0');
+                    connectionHandler.getFrameAscii(content, '\0');
+                    content=content.substr(0,content.length()-3);
                     std::string type_s;
-                    if(type==0) type_s="PM";
+                    if(typeInt==0) type_s="PM";
                     else type_s="PUBLIC";
-                    std::cout<<"NOTIFICATION "<<type_s <<" "<<postingUser<<" "<<content<<std::endl;
+                    std::cout<<"NOTIFICATION "<<type_s <<" "<<postingUser<<""<<content<<std::endl;
                     break;
                 }
                 case 10: //ack
@@ -85,6 +84,8 @@ int main (int argc, char *argv[]) {
                         case 3: //logout-will terminate
                         {
                             connected=false;
+                            keyboardThread.join();
+                            break;
                         }
                         case 4: {
                             char numOfUsers[2];

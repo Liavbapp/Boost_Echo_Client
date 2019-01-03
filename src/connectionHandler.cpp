@@ -1,6 +1,6 @@
 #include <connectionHandler.h>
 #include <include/Util.h>
-
+#include <sys/ioctl.h>
 using boost::asio::ip::tcp;
 
 using std::cin;
@@ -122,7 +122,7 @@ std::string ConnectionHandler::prepareMessage(std::string userInput) {
     std::vector<std::string> splitted;
     std::string type;
     std::string preparedMessage;
-    char* bytesArr=new char[2];
+    char bytesArr [2];
     if(currentMessage.find(" ")!=string::npos) {
         type = currentMessage.substr(0, currentMessage.find(" "));
         currentMessage = currentMessage.substr(type.length() + 1, currentMessage.length() - type.length());
@@ -173,7 +173,7 @@ std::string ConnectionHandler::prepareMessage(std::string userInput) {
             bytesArr[1] = ((stoi(splitted[1]) & 0xFF));
             preparedMessage+=bytesArr[0];
             preparedMessage+=bytesArr[1];
-            preparedMessage+=prepareUserNameList(splitted); //+'\0';
+            preparedMessage+=prepareUserNameList(splitted)+'\0';
             break;
         }
 
@@ -189,7 +189,10 @@ std::string ConnectionHandler::prepareMessage(std::string userInput) {
             preparedMessage += bytesArr[0];
             preparedMessage += bytesArr[1];
             preparedMessage+=splitted[0]+'\0';
-            preparedMessage+=splitted[1] + '\0';
+            std::string content="";
+            for(int i=1;i<splitted.size();i++)
+                content+=splitted[i]+" ";
+            preparedMessage+=content + '\0';
             break;
         }
         case 7: { //userlist
@@ -228,4 +231,8 @@ std::string ConnectionHandler::concatenateNames(std::vector<std::string> strings
         toReturn+=strings[i]+" ";
     return toReturn.substr(0,toReturn.size()-1);
 }
+
+
+
+
 

@@ -5,6 +5,7 @@
 #include <iostream>
 #include <boost/asio.hpp>
 
+
 using boost::asio::ip::tcp;
 
 class ConnectionHandler {
@@ -46,6 +47,7 @@ public:
     // Send a message to the remote host.
     // Returns false in case connection is closed before all the data is sent.
     bool sendFrameAscii(const std::string& frame, char delimiter);
+
 	
     // Close down the connection properly.
     void close();

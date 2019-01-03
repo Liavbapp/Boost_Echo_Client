@@ -14,17 +14,20 @@ void readInputTask::run() {
         char buf[bufsize];
         std::cin.getline(buf, bufsize);
         std::string line(buf);
+        if(line=="LOGOUT")
+            connected=false;
         line=connectionHandler.prepareMessage(line)+'\n';
         int len=line.length();
 
         if (!connectionHandler.sendLine(line)) {
-            std::cout << "Disconnected. Exiting...\n" << std::endl;
+            setConnected(false);
             break;
         }
 
         //std::lock_guard<std::mutex> lock(_mutex); // constructor locks the mutex while
         //tasksQueue.push(line);
         //std::lock_guard<std::mutex> unlock(_mutex);
+
 
         // connectionHandler.sendLine(line) appends '\n' to the message. Therefor we send len+1 bytes.
     }
