@@ -103,15 +103,28 @@ int main (int argc, char *argv[]) {
                         case 4: {
                             char numOfUsers[2];
                             connectionHandler.getBytes(numOfUsers, 2);
-                            short numOfUsersShort = util.bytesToShort(numOfUsers);
+                            std::string numOfUsersString ="";
+                            numOfUsersString += numOfUsers[0];
+                            numOfUsersString+=numOfUsers[1];
+                            int numOfUsersInt=stoi(numOfUsersString);
                             std::string usernameList = "";
-                            for (int i = 0; i < numOfUsersShort; i = i + 1) {
+
+                            for (int i = 0; i < numOfUsersInt; i = i + 1) {
                                 std::string name = "";
-                                name = connectionHandler.getFrameAscii(name, '\0');
+                                connectionHandler.getFrameAscii(name, '\0');
+                                //??
+                                char trash [1];
+                                connectionHandler.getBytes(trash,1);
+
+                                name=name.substr(0,name.length()-1);
                                 usernameList += name + " ";
                             }
-                            optional += std::to_string(msgOpcodeShort) + " " + std::to_string(numOfUsersShort) + " " +
-                                        usernameList;
+
+
+                            usernameList=usernameList.substr(0,usernameList.length()-1); //cuts last " "
+                            optional += std::to_string(numOfUsersInt) + " ";
+                            optional+=usernameList;
+
                             break;
                         }
                         case 7: {

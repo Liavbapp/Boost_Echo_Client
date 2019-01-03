@@ -23,7 +23,6 @@ void readInputTask::run() {
         //std::lock_guard<std::mutex> unlock(_mutex);
 
         // connectionHandler.sendLine(line) appends '\n' to the message. Therefor we send len+1 bytes.
-        std::cout << "Sent " << len+1 << " bytes to server" << std::endl;
     }
 }
 
