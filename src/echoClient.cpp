@@ -72,7 +72,7 @@ int main (int argc, char *argv[]) {
                     std::string type_s;
                     if(typeInt==0) type_s="PM";
                     else type_s="Public";
-                    std::cout<<"NOTIFICATION "<<type_s <<" "<<postingUser<<""<<content<<std::endl;
+                    std::cout<<"NOTIFICATION "<<type_s <<" "<<postingUser<<" "<<content<<std::endl;
                     break;
                 }
                 case 10: //ack

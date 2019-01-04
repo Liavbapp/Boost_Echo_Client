@@ -1,7 +1,6 @@
 
-CHEN:
 
-1) post messages with @user and user does not exist
+
 2) empty missed notifications queue
 3) the second login after a successful one should fail
 4) multiple tagging creates multiple notifications: POST @chen @chen @chen
