@@ -66,10 +66,10 @@ int main (int argc, char *argv[]) {
                     postingUser=postingUser.substr(0,postingUser.length()-1);
                     std::string content = "";
                     connectionHandler.getFrameAscii(content, '\0');
-                    content=content.substr(0,content.length()-3);
+                    content=content.substr(0,content.length()-2);
                     std::string type_s;
                     if(typeInt==0) type_s="PM";
-                    else type_s="PUBLIC";
+                    else type_s="Public";
                     std::cout<<"NOTIFICATION "<<type_s <<" "<<postingUser<<""<<content<<std::endl;
                     break;
                 }
@@ -116,29 +116,47 @@ int main (int argc, char *argv[]) {
                         case 7: {
                             char numOfUsers[2];
                             connectionHandler.getBytes(numOfUsers, 2);
-                            short numOfUsers_s = util.bytesToShort(numOfUsers);
-                            std::string userNameList;
-                            userNameList = connectionHandler.getUserNameList(userNameList, numOfUsers_s);
-                            optional+=numOfUsers_s+" ";
+                            std::string numOfUsersString ="";
+                            numOfUsersString += numOfUsers[0];
+                            numOfUsersString+=numOfUsers[1];
+                            int numOfUsersInt=stoi(numOfUsersString);
+                            std::string userNameList="";
+                            userNameList = connectionHandler.getUserNameList(userNameList, numOfUsersInt);
+                            optional+=std::to_string(numOfUsersInt)+" ";
                             optional+=userNameList;
+
                             break;
                         }
                         case 8: {
+
+
+
                             char numPosts[2];
                             connectionHandler.getBytes(numPosts, 2);
-                            short numPosts_s = util.bytesToShort(numPosts);
+                            std::string numOfPosts="";
+                            numOfPosts+=numPosts[0];
+                            numOfPosts+=numPosts[1];
+                            int numPosts_s = stoi(numOfPosts);
 
                             char numFollowers[2];
                             connectionHandler.getBytes(numFollowers, 2);
-                            short numFollowers_s = util.bytesToShort(numFollowers);
+                            std::string numOfFollowers="";
+                            numOfFollowers+=numFollowers[0];
+                            numOfFollowers+=numFollowers[1];
+                            int numFollowers_s = stoi(numOfFollowers);
 
                             char numFollowing[2];
                             connectionHandler.getBytes(numFollowing, 2);
-                            short numFollowing_s = util.bytesToShort(numFollowing);
+                            std::string numOfFollowing="";
+                            numOfFollowing+=numFollowing[0];
+                            numOfFollowing+=numFollowing[1];
+                            int numFollowing_s = stoi(numOfFollowing);
 
-                            optional+=numPosts_s+" ";
-                            optional+=numFollowers_s+" ";
-                            optional+=numFollowing_s;
+                            optional+=std::to_string(numPosts_s)+" ";
+                            optional+=std::to_string(numFollowers_s)+" ";
+                            optional+=std::to_string(numFollowing_s);
+
+                            std::string optioanl="";
 
                             break;
                         }

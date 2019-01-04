@@ -91,12 +91,15 @@ bool ConnectionHandler::getFrameAscii(std::string& frame, char delimiter) {
 }
 
 std::string ConnectionHandler::getUserNameList(std::string userList,short numOfUsers) {
-    std::string currentUserInList="";
     std::string toReturn="";
     for(int i=0;i<numOfUsers;i++) {
+        std::string currentUserInList="";
         getFrameAscii(currentUserInList,'\0');
+        currentUserInList.resize(currentUserInList.length()-1);
+        currentUserInList=currentUserInList+" ";
         toReturn+=currentUserInList;
     }
+    toReturn.resize(toReturn.length()-1);
     return toReturn;
 }
  
@@ -181,7 +184,10 @@ std::string ConnectionHandler::prepareMessage(std::string userInput) {
             util.shortToBytes(5,bytesArr);
             preparedMessage += bytesArr[0];
             preparedMessage += bytesArr[1];
-            preparedMessage+=concatenateNames(splitted) + '\0';
+            std::string content="";
+            for(int i=0;i<splitted.size();i++)
+                content+=splitted[i]+" ";
+            preparedMessage+=content + '\0';
             break;
         }
         case 6: { //pm
@@ -192,6 +198,7 @@ std::string ConnectionHandler::prepareMessage(std::string userInput) {
             std::string content="";
             for(int i=1;i<splitted.size();i++)
                 content+=splitted[i]+" ";
+
             preparedMessage+=content + '\0';
             break;
         }
