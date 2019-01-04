@@ -17,10 +17,12 @@ class readInputTask {
             bool connected;
              ConnectionHandler& connectionHandler;
              std::queue<std::string>& tasksQueue;
+             bool* shouldStop;
+            bool* gotErrorInLogout;
 
     public:
 
-   readInputTask(std::mutex &_mutex,ConnectionHandler& connectionHandler1,std::queue<std::string>& taskQueue);
+   readInputTask(std::mutex &_mutex,ConnectionHandler& connectionHandler1,std::queue<std::string>& taskQueue,bool* shouldKeyboardStop,bool* gotError);
 
     void run();
 

@@ -17,6 +17,8 @@ int main (int argc, char *argv[]) {
         return -1;
     }
 
+    bool* gotError=new bool(false);
+    bool* shouldKeyboardStop=new bool(false);
     Util util;
     std::mutex _mutex;
     std::queue <std::string> tasksQueue;
@@ -32,7 +34,7 @@ int main (int argc, char *argv[]) {
 
 
     connected=true;
-    readInputTask readInputTask1(_mutex,connectionHandler,tasksQueue);
+    readInputTask readInputTask1(_mutex,connectionHandler,tasksQueue,shouldKeyboardStop,gotError);
     std::thread keyboardThread(&readInputTask::run, &readInputTask1);
     int len=-1;
 
@@ -84,6 +86,7 @@ int main (int argc, char *argv[]) {
                         case 3: //logout-will terminate
                         {
                             connected=false;
+                            *shouldKeyboardStop=true;
                             keyboardThread.join();
                             break;
                         }
@@ -99,8 +102,6 @@ int main (int argc, char *argv[]) {
                             for (int i = 0; i < numOfUsersInt; i = i + 1) {
                                 std::string name = "";
                                 connectionHandler.getFrameAscii(name, '\0');
-
-
 
                                 name=name.substr(0,name.length()-1);
                                 usernameList += name + " ";
@@ -166,12 +167,13 @@ int main (int argc, char *argv[]) {
                 }
                 case 11: //error
                 {
+
                     char msgOpcode[2];
                     connectionHandler.getBytes(msgOpcode, 2);
                     short msgOpcode_s = util.bytesToShort(msgOpcode);
-
                     std::cout<<"ERROR "<<msgOpcode_s<< " " <<std::endl;
-
+                    if(msgOpcode_s==3)
+                        *gotError=true;
                     break;
                 }
             }
@@ -199,6 +201,8 @@ int main (int argc, char *argv[]) {
 
         }
     //}
+    delete shouldKeyboardStop;
+    delete gotError;
     return 0;
 }
 

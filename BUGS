@@ -1,9 +1,8 @@
 
-* REGISTRATION WITHOUT PASSWORD SUCCESS NOW..
-* SENDING A POST WITH NON EXITSTING @TAGGED PERSONS DOESN'T RETURN ERRORS
-* SPACES IN POST MESSAGE
-* LOGIN TO 2 DIFFRENT USERS FROM THE SERVER CLIENT IS ACCPTED BY US...
-* IF HAVE NOBDY TO POST TO SHOULD RETURN ERROR ?
-*after closing the run command and re run the run command login doesnt works
-* CHECK ON STAT NUM OF FOLLOWING AND NUM OF FOLLOWERS
-*CHECK UNFOLLOW
+CHEN:
+
+1) post messages with @user and user does not exist
+2) empty missed notifications queue
+3) the second login after a successful one should fail
+4) multiple tagging creates multiple notifications: POST @chen @chen @chen
+5) fix bytes in follow and userlist

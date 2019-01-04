@@ -176,7 +176,7 @@ std::string ConnectionHandler::prepareMessage(std::string userInput) {
             bytesArr[1] = ((stoi(splitted[1]) & 0xFF));
             preparedMessage+=bytesArr[0];
             preparedMessage+=bytesArr[1];
-            preparedMessage+=prepareUserNameList(splitted)+'\0';
+            preparedMessage+=prepareUserNameList(splitted);
             break;
         }
 
