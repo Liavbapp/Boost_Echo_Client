@@ -93,10 +93,7 @@ int main (int argc, char *argv[]) {
                         case 4: {
                             char numOfUsers[2];
                             connectionHandler.getBytes(numOfUsers, 2);
-                            std::string numOfUsersString ="";
-                            numOfUsersString += numOfUsers[0];
-                            numOfUsersString+=numOfUsers[1];
-                            int numOfUsersInt=stoi(numOfUsersString);
+                            int numOfUsersInt=util.bytesToShort(numOfUsers);
                             std::string usernameList = "";
 
                             for (int i = 0; i < numOfUsersInt; i = i + 1) {
@@ -117,47 +114,29 @@ int main (int argc, char *argv[]) {
                         case 7: {
                             char numOfUsers[2];
                             connectionHandler.getBytes(numOfUsers, 2);
-                            std::string numOfUsersString ="";
-                            numOfUsersString += numOfUsers[0];
-                            numOfUsersString+=numOfUsers[1];
-                            int numOfUsersInt=stoi(numOfUsersString);
+                            short numOfUsers_s=util.bytesToShort(numOfUsers);
                             std::string userNameList="";
-                            userNameList = connectionHandler.getUserNameList(userNameList, numOfUsersInt);
-                            optional+=std::to_string(numOfUsersInt)+" ";
+                            userNameList = connectionHandler.getUserNameList(userNameList, numOfUsers_s);
+                            optional+=std::to_string(numOfUsers_s)+" ";
                             optional+=userNameList;
-
                             break;
                         }
                         case 8: {
-
-
-
                             char numPosts[2];
                             connectionHandler.getBytes(numPosts, 2);
-                            std::string numOfPosts="";
-                            numOfPosts+=numPosts[0];
-                            numOfPosts+=numPosts[1];
-                            int numPosts_s = stoi(numOfPosts);
+                            short numPosts_s = util.bytesToShort(numPosts);
 
                             char numFollowers[2];
                             connectionHandler.getBytes(numFollowers, 2);
-                            std::string numOfFollowers="";
-                            numOfFollowers+=numFollowers[0];
-                            numOfFollowers+=numFollowers[1];
-                            int numFollowers_s = stoi(numOfFollowers);
+                            short numFollowers_s =util.bytesToShort(numFollowers);
 
                             char numFollowing[2];
                             connectionHandler.getBytes(numFollowing, 2);
-                            std::string numOfFollowing="";
-                            numOfFollowing+=numFollowing[0];
-                            numOfFollowing+=numFollowing[1];
-                            int numFollowing_s = stoi(numOfFollowing);
+                            short numFollowing_s = util.bytesToShort(numFollowing);
 
                             optional+=std::to_string(numPosts_s)+" ";
                             optional+=std::to_string(numFollowers_s)+" ";
                             optional+=std::to_string(numFollowing_s);
-
-                            std::string optioanl="";
 
                             break;
                         }
